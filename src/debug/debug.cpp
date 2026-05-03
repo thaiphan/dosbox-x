@@ -4046,6 +4046,16 @@ bool ParseCommand(char* str) {
 	return false;
 }
 
+bool DEBUG_ExecuteCommand(const char* command) {
+	if (command == NULL) {
+		return false;
+	}
+
+	std::vector<char> command_copy(strlen(command) + 1u);
+	memcpy(command_copy.data(), command, command_copy.size());
+	return ParseCommand(command_copy.data());
+}
+
 char* AnalyzeInstruction(char* inst, bool saveSelector) {
 	static char result[256];
 

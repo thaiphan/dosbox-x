@@ -25,6 +25,15 @@ void DEBUG_CheckExecuteBreakpoint(uint16_t seg, uint32_t off);
 bool DEBUG_ExitLoop(void);
 void DEBUG_RefreshPage(char scroll);
 Bitu DEBUG_EnableDebugger(void);
+typedef void (*DEBUG_OutputSink)(const char* line, void* user);
+#ifdef __cplusplus
+extern "C" {
+#endif
+bool DEBUG_ExecuteCommand(const char* command);
+void DEBUG_SetOutputSink(DEBUG_OutputSink sink, void* user);
+#ifdef __cplusplus
+}
+#endif
 
 extern Bitu cycle_count;
 extern Bitu debugCallback;

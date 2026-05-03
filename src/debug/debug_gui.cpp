@@ -59,6 +59,14 @@ int log_dev_con = 0;
 _LogGroup loggrp[LOG_MAX]={{"",LOG_NORMAL},{nullptr,LOG_NORMAL}};
 FILE* debuglog = NULL;
 
+static DEBUG_OutputSink debug_output_sink = NULL;
+static void* debug_output_sink_user = NULL;
+
+void DEBUG_SetOutputSink(DEBUG_OutputSink sink, void* user) {
+    debug_output_sink = sink;
+    debug_output_sink_user = user;
+}
+
 #if C_DEBUG
 static bool logBuffHasDiscarded = false;
 
@@ -739,6 +747,9 @@ void DEBUG_ShowMsg(char const* format,...) {
 		fflush(stderr);
 #endif
 	}
+
+    if (debug_output_sink != NULL)
+        debug_output_sink(buf, debug_output_sink_user);
 
 #if C_DEBUG
 	if (logBuffPos!=logBuff.end()) {
